@@ -1,28 +1,22 @@
 package ca.quickheaven.demo;
 
+import ca.quickheaven.demo.dao.TeamDao;
+import ca.quickheaven.demo.domain.Team;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 public class WhateverIWantController {
 
-    private Team team;
+    @Autowired
+    private TeamDao teamDao;
 
-    @PostConstruct
-    public void init() {
-        Set<Player> players = new HashSet<>();
-        players.add(new Player("Charlie Brown", "pitcher"));
-        players.add(new Player("Snoopy", "shortstop"));
+    @RequestMapping("/teams/{name}")
+    public Team hiThere(@PathVariable String name) {
+        Team team = teamDao.findByName(name);
 
-        team = new Team("California", "Peanuts", players);
-    }
-
-    @RequestMapping("/hi")
-    public Team hiThere() {
         return team;
     }
 }

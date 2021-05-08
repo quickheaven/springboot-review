@@ -1,15 +1,23 @@
-package ca.quickheaven.demo;
+package ca.quickheaven.demo.domain;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
 
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
 
 @XmlRootElement
+@Entity
 public class Team {
 
+    @Id
+    @GeneratedValue
+    private Long id;
     private String name;
     private String location;
     private String mascotte;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teamId")
     private Set<Player> players;
 
     public Team() {
@@ -19,6 +27,22 @@ public class Team {
         this.name = name;
         this.location = location;
         this.players = players;
+    }
+
+    public Team(Long id, String name, String location, String mascotte, Set<Player> players) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.mascotte = mascotte;
+        this.players = players;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
